@@ -13,7 +13,13 @@ app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/task', taskRoutes);
 
 app.use((err, req, res, next) => {
-  res.status(500).json({ error: err.message });
+  console.error(err.stack);
+
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  res.status(500).json({ message: err.message || 'Internal server error' });
 });
 
 const startServer = async () => {
