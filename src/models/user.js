@@ -7,12 +7,22 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Task, {
         foreignKey: 'userId',
         as: 'tasks',
-        onDelete: 'CASCADE' });
+        onDelete: 'CASCADE'
+      });
     }
   }
   User.init({
-    name: DataTypes.STRING,
-    email: { type: DataTypes.STRING, unique: true, allowNull: false },
+    name: {
+      type: DataTypes.STRING,      
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      },
+    },
     password: { type: DataTypes.STRING, allowNull: false },
   }, {
     sequelize,
